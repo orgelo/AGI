@@ -1,0 +1,47 @@
+@use '../../styles/variables' as *;
+
+.backend-status {
+  font-size: 13px;
+  margin-top: 4px;
+  &.ok {
+    color: #0d9f6e;
+  }
+  &.bad {
+    color: #b00020;
+    font-weight: 600;
+  }
+}
+
+.analyze-page {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: $gap-md;
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 10px 0 6px;
+  }
+
+  input[type='text'],
+  input[type='file'],
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: $radius-sm;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 10px;
+  }
+
+  .glass {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: $shadow-card;
+  }
+}

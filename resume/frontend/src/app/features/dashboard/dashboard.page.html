@@ -1,0 +1,25 @@
+<div class="page dashboard-page">
+  <header class="page-head">
+    <h1>数据看板</h1>
+    <p>汇总分析次数与平均得分（对应实验报告「范式数据看板」）</p>
+  </header>
+
+  <div class="stats" *ngIf="stats">
+    <article class="stat-card animate-in">
+      <h3>累计分析</h3>
+      <p class="num">{{ stats.totalAnalyses }}</p>
+    </article>
+    <article class="stat-card animate-in" style="animation-delay: 0.1s">
+      <h3>平均匹配度</h3>
+      <p class="num">{{ stats.avgMatchScore | number: '1.0-1' }}%</p>
+    </article>
+    <article class="stat-card animate-in" style="animation-delay: 0.2s">
+      <h3>平均结构分</h3>
+      <p class="num">{{ stats.avgStructureScore | number: '1.0-1' }}%</p>
+    </article>
+    <article class="stat-card animate-in" style="animation-delay: 0.3s">
+      <h3>近 7 日分析</h3>
+      <p class="num">{{ stats.recentCount }}</p>
+    </article>
+  </div>
+</div>

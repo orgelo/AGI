@@ -1,0 +1,53 @@
+export interface DiagnosisResult {
+  structureScore?: number;
+  expressionScore?: number;
+  quantScore?: number;
+  missingSections?: string[];
+  weakVerbs?: string[];
+  missingMetrics?: string[];
+  recommendations?: {
+    structure?: string[];
+    expression?: string[];
+    quant?: string[];
+  };
+}
+
+export interface MatchingResult {
+  matchScore?: number;
+  matchedKeywords?: string[];
+  partialKeywords?: string[];
+  missingKeywords?: string[];
+  targetedAdvice?: string[];
+}
+
+export interface OptimizationResult {
+  rewrittenHighlights?: string[];
+  beforeAfter?: { before: string; after: string; reason: string }[];
+  fullDraft?: string;
+}
+
+export interface AnalysisResult {
+  diagnosis?: DiagnosisResult;
+  matching?: MatchingResult;
+  optimization?: OptimizationResult;
+  notes?: string[];
+  _raw?: string;
+  _parsed?: boolean; // false 表示 AI 返回非标准 JSON
+}
+
+export interface AnalysisRecord {
+  id: number;
+  fileName: string;
+  jobTitle: string;
+  matchScore: number;
+  structureScore: number;
+  createdAt: string;
+  result?: AnalysisResult;
+}
+
+export interface DashboardStats {
+  totalAnalyses: number;
+  avgMatchScore: number;
+  avgStructureScore: number;
+  recentCount: number;
+}

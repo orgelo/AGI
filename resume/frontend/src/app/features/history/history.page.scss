@@ -1,0 +1,32 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 14px;
+  }
+
+  .high {
+    color: #0d9f6e;
+    font-weight: 700;
+  }
+  .mid {
+    color: #b8860b;
+    font-weight: 700;
+  }
+  .low {
+    color: #d64545;
+    font-weight: 700;
+  }
+}
+
+.empty {
+  color: rgba(0, 0, 0, 0.55);
+}

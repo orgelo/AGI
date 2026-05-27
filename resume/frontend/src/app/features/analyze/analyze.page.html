@@ -1,0 +1,39 @@
+<div class="page analyze-page">
+  <header class="page-head">
+    <h1>简历智能分析</h1>
+    <p>上传 PDF/DOCX，结合 JD 完成诊断、匹配与优化建议</p>
+    <p class="backend-status" [class.ok]="backendOk" [class.bad]="!backendOk">
+      {{ backendOk ? '后端已连接' : '后端未连接 — 请先启动 backend' }}
+    </p>
+  </header>
+
+  <div class="grid">
+    <section class="card glass">
+      <h2>上传与分析</h2>
+      <label>岗位名称（可选）</label>
+      <input type="text" [(ngModel)]="jobTitle" placeholder="如：前端开发工程师" />
+
+      <label>简历文件</label>
+      <input type="file" accept=".pdf,.docx" (change)="onFileChange($event)" />
+      <p class="hint" *ngIf="file">已选择：{{ file.name }}</p>
+
+      <label>岗位描述 JD</label>
+      <textarea rows="8" [(ngModel)]="jobDescription" placeholder="从招聘网站复制 JD"></textarea>
+
+      <button type="button" class="btn-primary" (click)="$event.preventDefault(); $event.stopPropagation(); onAnalyze()" [disabled]="loading">
+        {{ loading ? '分析中…' : '开始分析' }}
+      </button>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </section>
+
+    <section class="card">
+      <h2>分析结果</h2>
+      <app-result-panel
+        [analysis]="analysis"
+        [loading]="loading"
+        [loadingHint]="loadingHint"
+        [errorMessage]="errorMessage"
+      />
+    </section>
+  </div>
+</div>
