@@ -1,5 +1,4 @@
--- ResumeMind 关系数据库模式（第三范式）
--- 用于实验报告 3.2 节
+-- ResumeMind 数据库模式
 
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

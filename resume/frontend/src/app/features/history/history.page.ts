@@ -20,15 +20,12 @@ export class HistoryPage implements OnInit {
   error = '';
 
   ngOnInit() {
-    console.log('[DEBUG] HistoryPage ngOnInit called');
     this.api.getHistory().subscribe({
       next: (list) => {
-        console.log('[DEBUG] getHistory received:', list);
         this.records = list;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('[DEBUG] getHistory error:', err);
+      error: () => {
         this.error = '加载历史记录失败，请确认后端已启动';
         this.cdr.detectChanges();
       },

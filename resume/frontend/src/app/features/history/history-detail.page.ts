@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ResumeApiService } from '../../core/services/resume-api.service';
@@ -15,12 +15,16 @@ import { ResultPanelComponent } from '../../shared/components/result-panel/resul
 export class HistoryDetailPage implements OnInit {
   private readonly api = inject(ResumeApiService);
   private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
   record: AnalysisRecord | null = null;
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.api.getHistoryById(id).subscribe({
-      next: (r) => (this.record = r),
+      next: (r) => {
+        this.record = r;
+        this.cdr.detectChanges();
+      },
     });
   }
 }

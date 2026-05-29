@@ -47,7 +47,6 @@ export class AnalyzePage implements OnInit {
   }
 
   onAnalyze() {
-    console.log('[DEBUG] onAnalyze called');
     this.errorMessage = '';
     this.analysis = null;
     if (!this.backendOk) {
@@ -67,7 +66,7 @@ export class AnalyzePage implements OnInit {
     this.loading = true;
     this.loadingHint = isPdf
       ? '扫描版 PDF 较慢（约 1～3 分钟），请耐心等待…'
-      : '正在调用通义千问分析（约 10～30 秒）…';
+      : '正在分析简历（约 10～30 秒）…';
 
     this.api
       .analyze(this.file, this.jobDescription, this.jobTitle)
@@ -85,7 +84,6 @@ export class AnalyzePage implements OnInit {
           return throwError(() => err);
         }),
         finalize(() => {
-          console.log('[DEBUG] finalize called, setting loading=false');
           this.loading = false;
           this.loadingHint = '';
           this.cdr.detectChanges();
@@ -93,18 +91,16 @@ export class AnalyzePage implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          console.log('[DEBUG] API response received:', res);
           this.analysis = res;
           if (res?._parsed === false) {
-            this.errorMessage = 'AI 已响应但 JSON 格式异常，结果可能不完整，建议重试。';
+            this.errorMessage = '分析结果格式异常，建议重试。';
           }
         },
         error: (err) => {
-          console.log('[DEBUG] API error:', err);
           this.errorMessage =
             err?.error?.error ||
             err?.message ||
-            '请求失败：请确认 backend 已启动且 .env 中 DASHSCOPE_API_KEY 有效';
+            '请求失败：请确认 backend 已启动且 API Key 有效';
         },
       });
   }

@@ -32,7 +32,7 @@ export interface AnalysisResult {
   optimization?: OptimizationResult;
   notes?: string[];
   _raw?: string;
-  _parsed?: boolean; // false 表示 AI 返回非标准 JSON
+  _parsed?: boolean;
 }
 
 export interface AnalysisRecord {

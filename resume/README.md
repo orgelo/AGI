@@ -1,15 +1,15 @@
 # ResumeMind — 智能简历教练
 
-面向高校实验报告的完整 Web 项目：Angular 前端 + Node 微服务分层 + SQLite 关系库。
+基于 Angular 前端 + Node 微服务 + SQLite 的简历分析平台。
 
 ## 功能页面
 
 | 路由 | 说明 |
 |------|------|
-| `/analyze` | 上传 PDF/DOCX，结合 JD 进行 AI 诊断 |
-| `/history` | 分析历史列表（数据库持久化） |
-| `/history/:id` | 单次分析详情 |
-| `/dashboard` | 数据看板（平均分、近 7 日统计） |
+| `/analyze` | 上传 PDF/DOCX 简历，结合岗位描述进行智能分析 |
+| `/history` | 分析历史列表（数据持久化存储） |
+| `/history/:id` | 查看单次分析详情 |
+| `/dashboard` | 数据看板（累计分析次数、平均得分、近期统计） |
 
 ## 快速启动
 
@@ -18,7 +18,7 @@
 ```powershell
 cd e:\AGI\resume\backend
 npm.cmd install
-# 配置 .env：DASHSCOPE_API_KEY=你的密钥
+# 配置 .env：ARK_API_KEY=你的密钥
 npm.cmd run dev
 ```
 
@@ -43,16 +43,17 @@ npm.cmd start
 
 若页面空白，等终端出现 `√ Building...` 完成后再刷新。
 
-## 实验报告
+## 技术架构
 
-详见 [docs/REPORT_GUIDE.md](docs/REPORT_GUIDE.md)
+- **前端框架**: Angular 17 + TypeScript
+- **后端服务**: Node.js + Express
+- **数据库**: SQLite（关系型数据存储）
+- **AI 服务**: 火山引擎 Ark API（DeepSeek 模型）
 
-- SQL：`backend/db/schema.sql`、`seed.sql`
-- PlantUML：`docs/uml/`
-- Git 统计页模板：`stats/`
+## 核心功能
 
-## 技术难点（报告第 4 章）
-
-- 扫描 PDF → 图片 → 通义千问 VL OCR
-- 通义千问文本模型结构化 JSON 输出
-- 第三范式数据库 + 关键词关联表
+- 简历文本提取（支持 DOCX 和 PDF）
+- 岗位匹配度分析
+- 简历结构诊断
+- 优化建议生成
+- 分析历史管理
