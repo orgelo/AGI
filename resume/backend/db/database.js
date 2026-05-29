@@ -91,6 +91,27 @@ function listHistory(db) {
   return result;
 }
 
+function listHistoryPaginated(db, page, pageSize, offset) {
+  const total = db.prepare('SELECT COUNT(*) AS c FROM analyses').get().c;
+  const list = db
+    .prepare(
+      `SELECT a.id, rf.file_name AS fileName, jp.title AS jobTitle,
+              a.match_score AS matchScore, a.structure_score AS structureScore, a.created_at AS createdAt
+       FROM analyses a
+       JOIN resume_files rf ON rf.id = a.resume_id
+       JOIN job_posts jp ON jp.id = a.job_id
+       ORDER BY a.id DESC LIMIT ? OFFSET ?`
+    )
+    .all(pageSize, offset);
+  return { list, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
+}
+
+function deleteHistoryById(db, id) {
+  db.prepare('DELETE FROM keywords WHERE analysis_id = ?').run(id);
+  const result = db.prepare('DELETE FROM analyses WHERE id = ?').run(id);
+  return result.changes > 0;
+}
+
 function getHistoryById(db, id) {
   const row = db
     .prepare(
@@ -122,12 +143,43 @@ function getDashboard(db) {
       `SELECT COUNT(*) AS c FROM analyses WHERE datetime(created_at) >= datetime('now', '-7 days')`
     )
     .get().c;
+
+  const weekly = db
+    .prepare(
+      `SELECT date(created_at) AS date, COUNT(*) AS count
+       FROM analyses
+       WHERE datetime(created_at) >= datetime('now', '-6 days')
+       GROUP BY date(created_at)
+       ORDER BY date ASC`
+    )
+    .all();
+
+  const dayMap = {};
+  for (const row of weekly) {
+    dayMap[row.date] = row.count;
+  }
+
+  const today = new Date();
+  const dayLabels = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const result = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const dayOfWeek = dayLabels[d.getDay()];
+    result.push({
+      label: dayOfWeek,
+      count: dayMap[dateStr] || 0,
+    });
+  }
+
   return {
     totalAnalyses: total,
     avgMatchScore: avg.m || 0,
     avgStructureScore: avg.s || 0,
     recentCount: recent,
+    weeklyData: result,
   };
 }
 
-module.exports = { initDb, saveAnalysis, listHistory, getHistoryById, getDashboard, DB_PATH };
+module.exports = { initDb, saveAnalysis, listHistory, listHistoryPaginated, deleteHistoryById, getHistoryById, getDashboard, DB_PATH };

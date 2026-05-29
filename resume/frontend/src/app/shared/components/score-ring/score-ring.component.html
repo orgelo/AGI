@@ -10,7 +10,7 @@
     />
   </svg>
   <div class="ring-text">
-    <strong>{{ score ?? '-' }}</strong>
+    <strong>{{ score !== null && score !== undefined ? (score | number:'1.0-0') : '-' }}</strong>
     <span>{{ label }}</span>
   </div>
 </div>

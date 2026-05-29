@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AnalysisRecord, AnalysisResult, DashboardStats } from '../models/analysis.model';
+import { AnalysisRecord, AnalysisResult, DashboardStats, PaginatedResponse } from '../models/analysis.model';
 
 @Injectable({ providedIn: 'root' })
 export class ResumeApiService {
@@ -16,12 +16,19 @@ export class ResumeApiService {
     return this.http.post<AnalysisResult>(`${this.apiBaseUrl}/api/analyze`, formData);
   }
 
-  getHistory(): Observable<AnalysisRecord[]> {
-    return this.http.get<AnalysisRecord[]>(`${this.apiBaseUrl}/api/history`);
+  getHistory(page = 1, pageSize = 10): Observable<PaginatedResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+    return this.http.get<PaginatedResponse>(`${this.apiBaseUrl}/api/history`, { params });
   }
 
   getHistoryById(id: number): Observable<AnalysisRecord> {
     return this.http.get<AnalysisRecord>(`${this.apiBaseUrl}/api/history/${id}`);
+  }
+
+  deleteHistory(id: number): Observable<{ success: boolean }> {
+    return this.http.delete<{ success: boolean }>(`${this.apiBaseUrl}/api/history/${id}`);
   }
 
   getDashboard(): Observable<DashboardStats> {

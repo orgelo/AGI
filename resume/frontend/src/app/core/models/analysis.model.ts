@@ -50,4 +50,13 @@ export interface DashboardStats {
   avgMatchScore: number;
   avgStructureScore: number;
   recentCount: number;
+  weeklyData?: { label: string; count: number }[];
+}
+
+export interface PaginatedResponse {
+  list: AnalysisRecord[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }

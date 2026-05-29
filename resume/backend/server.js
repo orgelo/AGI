@@ -8,6 +8,8 @@ const {
   initDb,
   saveAnalysis,
   listHistory,
+  listHistoryPaginated,
+  deleteHistoryById,
   getHistoryById,
   getDashboard,
 } = require('./db/database');
@@ -90,9 +92,20 @@ app.get('/api/dashboard', (_req, res) => {
   res.json(getDashboard(db));
 });
 
-app.get('/api/history', (_req, res) => {
-  if (!db) return res.json([]);
-  res.json(listHistory(db));
+app.get('/api/history', (req, res) => {
+  if (!db) return res.json({ list: [], total: 0 });
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const pageSize = Math.min(50, Math.max(5, Number(req.query.pageSize) || 10));
+  const offset = (page - 1) * pageSize;
+  const result = listHistoryPaginated(db, page, pageSize, offset);
+  res.json(result);
+});
+
+app.delete('/api/history/:id', (req, res) => {
+  if (!db) return res.status(503).json({ error: '数据库未就绪' });
+  const deleted = deleteHistoryById(db, Number(req.params.id));
+  if (!deleted) return res.status(404).json({ error: '记录不存在' });
+  res.json({ success: true });
 });
 
 app.get('/api/history/:id', (req, res) => {

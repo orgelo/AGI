@@ -11,7 +11,7 @@
 
   .ring-bg {
     fill: none;
-    stroke: rgba(0, 0, 0, 0.08);
+    stroke: #e2e8f0;
     stroke-width: 8;
   }
 
@@ -24,13 +24,13 @@
   }
 
   &.high .ring-fg {
-    stroke: #0d9f6e;
+    stroke: #10b981;
   }
   &.mid .ring-fg {
-    stroke: #e6a700;
+    stroke: #f59e0b;
   }
   &.low .ring-fg {
-    stroke: #d64545;
+    stroke: #ef4444;
   }
 }
 
@@ -49,6 +49,6 @@
   }
   span {
     margin-top: 4px;
-    color: rgba(0, 0, 0, 0.55);
+    color: #64748b;
   }
 }
